@@ -8,22 +8,28 @@ export default function ExplorePage()
     const [fetchedData, setFetchedData] = useState([]);
     const [totalPageNo, setTotalPageNo] = useState(0);
 
-    const fetchData = async () =>{
-        try{
-            const response = await fetch(`https://api.themoviedb.org/3/discover/${params.explore}?api_key=44b5188feee10f18171ebe1f776fc384&page=${pageNo}`);
-            const data = await response.json();
-
-            setFetchedData((prev) => {
-                return[
-                    ...prev,
-                    ...data.results
-                ]
-            })
-            setTotalPageNo(data.total_pages);
-        }catch(error){
-            console.log("error", error)
+    const fetchData = async () => {
+        if (!["movie", "tv"].includes(params.explore)) {
+            console.warn("Invalid media type:", params.explore);
+            return;
         }
-    }
+    
+        try {
+            const response = await fetch(
+                `https://api.themoviedb.org/3/discover/${params.explore}?api_key=44b5188feee10f18171ebe1f776fc384&page=${pageNo}`
+            );
+            const data = await response.json();
+    
+            if (Array.isArray(data.results)) {
+                setFetchedData(prev => [...prev, ...data.results]);
+                setTotalPageNo(data.total_pages);
+            } else {
+                console.error("Unexpected API response", data);
+            }
+        } catch (error) {
+            console.log("Fetch error:", error);
+        }
+    };
 
     const handleScroll = () =>{
         if((window.innerHeight + window.scrollY) >= document.body.offsetHeight){

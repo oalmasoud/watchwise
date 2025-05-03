@@ -10,5 +10,5 @@ export default defineConfig({
       usePolling: true
     }
   },
-  base: '/watchwise/'
+  base: process.env.NODE_ENV === "production" ? "/watchwise/" : "/",
 });
