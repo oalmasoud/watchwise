@@ -5,31 +5,35 @@ import SearchPage from "../pages/Search";
 import ExplorePage from "../pages/Explore";
 import DetailsPage from "../pages/Details";
 
-const router = createBrowserRouter([
-    {   
-        path: "/",
-        element: <App/>,
-        children: [
-            {
-                path: "",
-                element: <HomePage/>
-            },
-            {
-                path: ":explore",
-                element: <ExplorePage/>
-            },
-            {
-                path: ":explore/:id",
-                element: <DetailsPage/>
-            },
-            {
-                path: "search",
-                element: <SearchPage/>
-            },
-            
-        ]
-
+const router = createBrowserRouter(
+    [
+        {   
+            path: "/",
+            element: <App/>,
+            children: [
+                {
+                    path: "",
+                    element: <HomePage/>
+                },
+                {
+                    path: ":explore",
+                    element: <ExplorePage/>
+                },
+                {
+                    path: ":explore/:id",
+                    element: <DetailsPage/>
+                },
+                {
+                    path: "search",
+                    element: <SearchPage/>
+                },
+            ]
+        }
+    ],
+    {
+        basename: process.env.NODE_ENV === "production" ? "/watchwise" : "/"
     }
-]);
+);
+
 
 export default router;
